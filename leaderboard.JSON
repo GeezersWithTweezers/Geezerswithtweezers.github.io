@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Grand Seiko",
+    "change": 4,
+    "trend": [72, 78, 85, 90],
+    "insight": "a bold embrace of textured dials and high-beat movements that resonate with collectors"
+  },
+  {
+    "name": "Rolex",
+    "change": 2,
+    "trend": [80, 82, 83, 85],
+    "insight": "consistent brand equity and subtle design evolution"
+  },
+  {
+    "name": "Patek Philippe",
+    "change": -1,
+    "trend": [88, 87, 85, 84],
+    "insight": "a conservative release strategy that may be losing momentum"
+  },
+  {
+    "name": "Omega",
+    "change": -3,
+    "trend": [75, 74, 70, 68],
+    "insight": "overreliance on heritage reissues without fresh innovation"
+  },
+  {
+    "name": "TAG Heuer",
+    "change": 1,
+    "trend": [65, 67, 70, 72],
+    "insight": "a resurgence driven by motorsport collaborations and bold case designs"
+  }
+]
