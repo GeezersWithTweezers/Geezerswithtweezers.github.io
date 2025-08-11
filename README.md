@@ -1,4 +1,3 @@
-# Geezerswithtweezers.github.io
 <!-- Tackymeter Analytics Section -->
 <style>
   .tackymeter-wrapper {
