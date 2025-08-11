@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GWT Power Rankings</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #0e0e11;
+      color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+
+    h1, h2 {
+      color: #00ffc8;
+      text-transform: uppercase;
+    }
+
+    .leaderboard-entry {
+      display: flex;
+      justify-content: space-between;
+      background: #1a1a1f;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+      border-left: 5px solid #00ffc8;
+      border-radius: 5px;
+    }
+
+    .change.up { color: #00ff88; }
+    .change.down { color: #ff0055; }
+
+    .ai-commentary {
+      margin-top: 20px;
+      background: #121216;
+      padding: 15px;
+      border-left: 3px solid #00ffc8;
+      border-radius: 5px;
+      font-style: italic;
+      color: #ccc;
+    }
+
+    canvas {
+      margin-top: 40px;
+      background: #1a1a1f;
+      border-radius: 10px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>GWT Power Rankings</h1>
+  <p>The quarterly leaderboard of watch brands, powered by Tackymeter analytics.</p>
+
+  <div id="leaderboard"></div>
+
+  <div class="ai-commentary" id="aiCommentary"></div>
+
+  <canvas id="trendChart" width="600" height="300"></canvas>
+
+  <script>
+    // Load leaderboard data
+    fetch('leaderboard.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('leaderboard');
+        const commentary = document.getElementById('aiCommentary');
+
+        data.forEach((brand, index) => {
+          const entry = document.createElement('div');
+          entry.className = 'leaderboard-entry';
+          entry.innerHTML = `
+            <span>${index + 1}.</span>
+            <span>${brand.name}</span>
+            <span class="change ${brand.change > 0 ? 'up' : 'down'}">${brand.change > 0 ? '+' : ''}${brand.change}</span>
+          `;
+          container.appendChild(entry);
+        });
+
+        // AI-style insight
+        const topBrand = data[0];
+        commentary.innerHTML = `<h2>AI Insight: ${topBrand.name}</h2>
+          <p>“${topBrand.name} continues to dominate with a ${topBrand.change > 0 ? 'positive' : 'challenging'} trajectory, driven by ${topBrand.insight}.”</p>`;
+        
+        // Chart
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            datasets: [{
+              label: topBrand.name,
+              data: topBrand.trend,
+              borderColor: '#00ffc8',
+              backgroundColor: 'rgba(0,255,200,0.1)',
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { labels: { color: '#ccc' } }
+            },
+            scales: {
+              x: { ticks: { color: '#ccc' } },
+              y: { ticks: { color: '#ccc' } }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>
