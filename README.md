@@ -5,30 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Geezers With Tweezers</title>
   <style>
+    /* 🏎️ Retro Motorsport + Luxury Theme */
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
+      background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+      color: #e0e0e0;
     }
 
     header {
-      background-color: #222;
-      color: #fff;
-      padding: 20px;
+      background-color: #111;
+      color: #f5f5f5;
+      padding: 30px;
       text-align: center;
+      border-bottom: 4px solid #cc0000;
     }
 
     .section {
       padding: 40px 20px;
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
+      background-color: #1f1f1f;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      margin-bottom: 40px;
     }
 
     h2 {
       margin-bottom: 20px;
-      color: #444;
+      color: #ffcc00;
+      font-family: 'Courier New', monospace;
     }
 
     label {
@@ -40,20 +47,25 @@
       width: 60px;
       padding: 5px;
       margin-left: 10px;
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #666;
+      border-radius: 4px;
     }
 
     button {
       margin-top: 15px;
       padding: 10px 20px;
-      background-color: #0077cc;
+      background-color: #cc0000;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     button:hover {
-      background-color: #005fa3;
+      background-color: #ff3300;
     }
 
     #scoreResult {
@@ -73,10 +85,12 @@
       border-radius: 8px;
       cursor: pointer;
       transition: transform 0.3s ease;
+      border: 2px solid #444;
     }
 
     .gallery-grid img:hover {
       transform: scale(1.05);
+      border-color: #ffcc00;
     }
 
     .modal {
@@ -84,7 +98,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       justify-content: center;
       align-items: center;
       z-index: 999;
@@ -94,13 +108,37 @@
       max-width: 80%;
       max-height: 80%;
       border-radius: 10px;
+      border: 4px solid #ffcc00;
+    }
+
+    .leaderboard {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .leaderboard th, .leaderboard td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #444;
+    }
+
+    .leaderboard th {
+      background-color: #333;
+      color: #ffcc00;
+      font-family: 'Courier New', monospace;
+    }
+
+    .leaderboard tr:hover {
+      background-color: #2a2a2a;
     }
 
     footer {
       text-align: center;
       padding: 20px;
-      background-color: #222;
+      background-color: #111;
       color: white;
+      border-top: 4px solid #cc0000;
     }
   </style>
 </head>
@@ -134,6 +172,46 @@
 
   <div id="modal" class="modal" onclick="closeModal()">
     <img id="modalImg" />
+  </div>
+
+  <div class="section" id="leaderboard">
+    <h2>🏁 F1-Inspired Watch Leaderboard</h2>
+    <table class="leaderboard">
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Lap Time (Style)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>TAG Heuer</td>
+          <td>Monaco</td>
+          <td>1:18.4</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Omega</td>
+          <td>Speedmaster</td>
+          <td>1:19.2</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Rolex</td>
+          <td>Daytona</td>
+          <td>1:20.1</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Grand Seiko</td>
+          <td>SBGA413</td>
+          <td>1:21.7</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <footer>
