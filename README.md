@@ -205,5 +205,18 @@
       }
     };
   </script>
+  <script>
+  function calculateTackymeter() {
+    const style = parseInt(document.getElementById('style').value) || 0;
+    const innovation = parseInt(document.getElementById('innovation').value) || 0;
+    const taste = parseInt(document.getElementById('taste').value) || 0;
+
+    const score = Math.round((style * 0.4 + innovation * 0.3 + taste * 0.3) * 10);
+    const result = document.getElementById('scoreResult');
+
+    result.textContent = `Your Tackymeter Score: ${score}/100`;
+    result.style.color = score >= 70 ? '#00ff88' : score >= 40 ? '#ffaa00' : '#ff0055';
+  }
+</script>
 </body>
 </html>
