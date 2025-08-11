@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tackymeter</title>
   <style>
+    body {
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .dark-mode {
+      background: #000;
+      color: #fff;
+    }
+
     .tackymeter-wrapper {
       font-family: 'Arial', sans-serif;
       background: #0e0e11;
@@ -15,15 +24,19 @@
       border-radius: 10px;
     }
 
-    .tackymeter-wrapper h1,
-    .tackymeter-wrapper h2 {
+    .dark-mode .tackymeter-wrapper {
+      background: #111;
+      color: #eee;
+    }
+
+    h1, h2 {
       color: #00ffc8;
       text-transform: uppercase;
       margin-bottom: 10px;
       letter-spacing: 1px;
     }
 
-    .tackymeter-wrapper p {
+    p {
       font-size: 16px;
       color: #ccc;
       line-height: 1.6;
@@ -33,29 +46,6 @@
       margin-top: 50px;
       border-top: 1px solid #333;
       padding-top: 30px;
-    }
-
-    .walls ul,
-    .awards ul,
-    .leaderboard {
-      margin-top: 20px;
-      padding-left: 0;
-      list-style: none;
-    }
-
-    .walls li,
-    .awards li {
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .walls a {
-      color: #00ffc8;
-      text-decoration: none;
-    }
-
-    .walls a:hover {
-      text-decoration: underline;
     }
 
     .leaderboard .brand-entry {
@@ -69,48 +59,39 @@
       transition: background 0.3s ease;
     }
 
-    .leaderboard .brand-entry:hover {
+    .brand-entry:hover {
       background: #2a2a2f;
       cursor: pointer;
     }
 
-    .leaderboard .change {
-      font-weight: bold;
+    .change.up { color: #00ff88; }
+    .change.down { color: #ff0055; }
+
+    .controls {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .leaderboard .up {
-      color: #00ff88;
+    input[type="text"] {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      width: 200px;
     }
 
-    .leaderboard .down {
-      color: #ff0055;
+    button {
+      padding: 8px 12px;
+      border: none;
+      background: #00ffc8;
+      color: #000;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
-    .awards li.winner {
-      color: #00ff88;
-    }
-
-    .awards li.loser {
-      color: #ff0055;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .hero p {
-      font-style: italic;
-      font-size: 18px;
-      color: #aaa;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 600px) {
-      .leaderboard .brand-entry {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    button:hover {
+      background: #00e6b8;
     }
   </style>
 </head>
@@ -121,22 +102,20 @@
       <p>Bespoke. Purpose-built. AI-powered horological analytics for a new era of taste.</p>
     </div>
 
-    <div class="section walls">
-      <h2>The Tackymeter Walls</h2>
-      <p>Each quarter, we analyze watch releases and rank them on the Tackymeter — a 100-point scale of stylistic precision. Our extra wall focuses exclusively on the spectacle of Watches & Wonders.</p>
-      <ul>
-        <li><a href="#wall-q1">Q1 Tackymeter Wall</a></li>
-        <li><a href="#wall-q2">Q2 Tackymeter Wall</a></li>
-        <li><a href="#wall-q3">Q3 Tackymeter Wall</a></li>
-        <li><a href="#wall-q4">Q4 Tackymeter Wall</a></li>
-        <li><a href="#wall-wonders">Watches & Wonders Tackymeter</a></li>
-      </ul>
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search brand..." oninput="filterBrands()" />
+      <button onclick="sortBy('position')">Sort by Position</button>
+      <button onclick="sortBy('brand')">Sort by Brand</button>
+      <button onclick="sortBy('change')">Sort by Change</button>
+      <button onclick="filterBy('up')">Show ↑ Only</button>
+      <button onclick="filterBy('down')">Show ↓ Only</button>
+      <button onclick="resetFilter()">Reset</button>
+      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
 
     <div class="section">
       <h2>GWT Power Rankings</h2>
-      <p>The quarterly league table of the top 50 watch brands — ranked using data, sentiment, and taste dynamics. Updated in real-time, this is your compass in the horological noise.</p>
-      <div class="leaderboard">
+      <div class="leaderboard" id="leaderboard">
         <div class="brand-entry">
           <span class="position">1.</span>
           <span class="brand-name">Rolex</span>
@@ -152,20 +131,79 @@
           <span class="brand-name">Grand Seiko</span>
           <span class="change up">+4</span>
         </div>
+        <div class="brand-entry">
+          <span class="position">4.</span>
+          <span class="brand-name">Omega</span>
+          <span class="change down">-3</span>
+        </div>
+        <div class="brand-entry">
+          <span class="position">5.</span>
+          <span class="brand-name">TAG Heuer</span>
+          <span class="change up">+1</span>
+        </div>
       </div>
     </div>
-
-    <div class="section awards">
-      <h2>The GWT Awards</h2>
-      <p>At year’s end, we honor the most iconic — and the most infamous. Five winners, five losers. All powered by Tackymeter’s end-of-year metrics.</p>
-      <ul>
-        <li class="winner">🏆 Best Overall Brand – Grand Seiko</li>
-        <li class="winner">🚀 Breakout Brand – Nomos Glashütte</li>
-        <li class="winner">🧠 Best Innovation – Zenith Defy Extreme</li>
-        <li class="loser">📉 Biggest Disappointment – Hublot Classic Fusion Remix</li>
-        <li class="loser">💀 Most Overhyped – Brand X “Limited Edition”</li>
-      </ul>
-    </div>
   </div>
+
+  <script>
+    function sortBy(type) {
+      const container = document.getElementById('leaderboard');
+      const entries = Array.from(container.querySelectorAll('.brand-entry'));
+
+      entries.sort((a, b) => {
+        if (type === 'position') {
+          return parseInt(a.querySelector('.position').textContent) - parseInt(b.querySelector('.position').textContent);
+        } else if (type === 'brand') {
+          return a.querySelector('.brand-name').textContent.localeCompare(b.querySelector('.brand-name').textContent);
+        } else if (type === 'change') {
+          const changeA = parseInt(a.querySelector('.change').textContent);
+          const changeB = parseInt(b.querySelector('.change').textContent);
+          return changeB - changeA;
+        }
+      });
+
+      container.innerHTML = '';
+      entries.forEach(entry => container.appendChild(entry));
+    }
+
+    function filterBy(direction) {
+      const entries = document.querySelectorAll('.brand-entry');
+      entries.forEach(entry => {
+        const change = entry.querySelector('.change');
+        if (!change.classList.contains(direction)) {
+          entry.style.display = 'none';
+        } else {
+          entry.style.display = 'flex';
+        }
+      });
+    }
+
+    function resetFilter() {
+      document.querySelectorAll('.brand-entry').forEach(entry => {
+        entry.style.display = 'flex';
+      });
+      document.getElementById('searchInput').value = '';
+    }
+
+    function filterBrands() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.brand-entry').forEach(entry => {
+        const brand = entry.querySelector('.brand-name').textContent.toLowerCase();
+        entry.style.display = brand.includes(query) ? 'flex' : 'none';
+      });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    }
+
+    // Load dark mode preference
+    window.onload = () => {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+    };
+  </script>
 </body>
 </html>
