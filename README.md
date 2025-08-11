@@ -3,220 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tackymeter</title>
+  <title>Geezers With Tweezers</title>
   <style>
     body {
-      transition: background 0.3s ease, color 0.3s ease;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
     }
 
-    .dark-mode {
-      background: #000;
+    header {
+      background-color: #222;
       color: #fff;
-    }
-
-    .tackymeter-wrapper {
-      font-family: 'Arial', sans-serif;
-      background: #0e0e11;
-      color: #f2f2f2;
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-      border-radius: 10px;
-    }
-
-    .dark-mode .tackymeter-wrapper {
-      background: #111;
-      color: #eee;
-    }
-
-    h1, h2 {
-      color: #00ffc8;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    p {
-      font-size: 16px;
-      color: #ccc;
-      line-height: 1.6;
+      padding: 20px;
+      text-align: center;
     }
 
     .section {
-      margin-top: 50px;
-      border-top: 1px solid #333;
-      padding-top: 30px;
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: auto;
     }
 
-    .leaderboard .brand-entry {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 15px;
-      background: #1a1a1f;
-      margin-bottom: 8px;
-      border-left: 5px solid #00ffc8;
-      border-radius: 5px;
-      transition: background 0.3s ease;
+    h2 {
+      margin-bottom: 20px;
+      color: #444;
     }
 
-    .brand-entry:hover {
-      background: #2a2a2f;
-      cursor: pointer;
+    label {
+      display: block;
+      margin: 10px 0;
     }
 
-    .change.up { color: #00ff88; }
-    .change.down { color: #ff0055; }
-
-    .controls {
-      margin: 20px 0;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    input[type="text"] {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      width: 200px;
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      margin-left: 10px;
     }
 
     button {
-      padding: 8px 12px;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
       border: none;
-      background: #00ffc8;
-      color: #000;
       border-radius: 5px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #00e6b8;
+      background-color: #005fa3;
+    }
+
+    #scoreResult {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+
+    .gallery-grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .gallery-grid img {
+      width: 200px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal img {
+      max-width: 80%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #222;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="tackymeter-wrapper">
-    <div class="hero">
-      <h1>Tackymeter</h1>
-      <p>Bespoke. Purpose-built. AI-powered horological analytics for a new era of taste.</p>
-    </div>
 
-    <div class="controls">
-      <input type="text" id="searchInput" placeholder="Search brand..." oninput="filterBrands()" />
-      <button onclick="sortBy('position')">Sort by Position</button>
-      <button onclick="sortBy('brand')">Sort by Brand</button>
-      <button onclick="sortBy('change')">Sort by Change</button>
-      <button onclick="filterBy('up')">Show ↑ Only</button>
-      <button onclick="filterBy('down')">Show ↓ Only</button>
-      <button onclick="resetFilter()">Reset</button>
-      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-    </div>
+  <header>
+    <h1>Geezers With Tweezers</h1>
+    <p>Celebrating Watchmaking, Taste, and Speed</p>
+  </header>
 
-    <div class="section">
-      <h2>GWT Power Rankings</h2>
-      <div class="leaderboard" id="leaderboard">
-        <div class="brand-entry">
-          <span class="position">1.</span>
-          <span class="brand-name">Rolex</span>
-          <span class="change up">+2</span>
-        </div>
-        <div class="brand-entry">
-          <span class="position">2.</span>
-          <span class="brand-name">Patek Philippe</span>
-          <span class="change down">-1</span>
-        </div>
-        <div class="brand-entry">
-          <span class="position">3.</span>
-          <span class="brand-name">Grand Seiko</span>
-          <span class="change up">+4</span>
-        </div>
-        <div class="brand-entry">
-          <span class="position">4.</span>
-          <span class="brand-name">Omega</span>
-          <span class="change down">-3</span>
-        </div>
-        <div class="brand-entry">
-          <span class="position">5.</span>
-          <span class="brand-name">TAG Heuer</span>
-          <span class="change up">+1</span>
-        </div>
-      </div>
+  <div class="section" id="tackymeter-test">
+    <h2>Tackymeter Taste Test</h2>
+    <p>Rate this watch on style, innovation, and taste. Your score will be calculated instantly.</p>
+
+    <label>Style (1–10): <input type="number" id="style" min="1" max="10" /></label>
+    <label>Innovation (1–10): <input type="number" id="innovation" min="1" max="10" /></label>
+    <label>Taste (1–10): <input type="number" id="taste" min="1" max="10" /></label>
+    <button onclick="calculateTackymeter()">Calculate Score</button>
+
+    <div id="scoreResult"></div>
+  </div>
+
+  <div class="section" id="gallery">
+    <h2>Watch Gallery</h2>
+    <div class="gallery-grid">
+      <img src="images/grand-seiko.jpg" alt="Grand Seiko" onclick="openModal(this)" />
+      <img src="images/rolex.jpg" alt="Rolex" onclick="openModal(this)" />
+      <img src="images/tag-heuer.jpg" alt="TAG Heuer" onclick="openModal(this)" />
     </div>
   </div>
 
+  <div id="modal" class="modal" onclick="closeModal()">
+    <img id="modalImg" />
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Geezers With Tweezers. All rights reserved.</p>
+  </footer>
+
   <script>
-    function sortBy(type) {
-      const container = document.getElementById('leaderboard');
-      const entries = Array.from(container.querySelectorAll('.brand-entry'));
+    function calculateTackymeter() {
+      const style = parseInt(document.getElementById('style').value) || 0;
+      const innovation = parseInt(document.getElementById('innovation').value) || 0;
+      const taste = parseInt(document.getElementById('taste').value) || 0;
 
-      entries.sort((a, b) => {
-        if (type === 'position') {
-          return parseInt(a.querySelector('.position').textContent) - parseInt(b.querySelector('.position').textContent);
-        } else if (type === 'brand') {
-          return a.querySelector('.brand-name').textContent.localeCompare(b.querySelector('.brand-name').textContent);
-        } else if (type === 'change') {
-          const changeA = parseInt(a.querySelector('.change').textContent);
-          const changeB = parseInt(b.querySelector('.change').textContent);
-          return changeB - changeA;
-        }
-      });
+      const score = Math.round((style * 0.4 + innovation * 0.3 + taste * 0.3) * 10);
+      const result = document.getElementById('scoreResult');
 
-      container.innerHTML = '';
-      entries.forEach(entry => container.appendChild(entry));
+      result.textContent = `Your Tackymeter Score: ${score}/100`;
+      result.style.color = score >= 70 ? '#00cc66' : score >= 40 ? '#ffaa00' : '#ff3333';
     }
 
-    function filterBy(direction) {
-      const entries = document.querySelectorAll('.brand-entry');
-      entries.forEach(entry => {
-        const change = entry.querySelector('.change');
-        if (!change.classList.contains(direction)) {
-          entry.style.display = 'none';
-        } else {
-          entry.style.display = 'flex';
-        }
-      });
+    function openModal(img) {
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = img.src;
+      modal.style.display = 'flex';
     }
 
-    function resetFilter() {
-      document.querySelectorAll('.brand-entry').forEach(entry => {
-        entry.style.display = 'flex';
-      });
-      document.getElementById('searchInput').value = '';
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
     }
-
-    function filterBrands() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.brand-entry').forEach(entry => {
-        const brand = entry.querySelector('.brand-name').textContent.toLowerCase();
-        entry.style.display = brand.includes(query) ? 'flex' : 'none';
-      });
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    }
-
-    // Load dark mode preference
-    window.onload = () => {
-      if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-      }
-    };
   </script>
-  <script>
-  function calculateTackymeter() {
-    const style = parseInt(document.getElementById('style').value) || 0;
-    const innovation = parseInt(document.getElementById('innovation').value) || 0;
-    const taste = parseInt(document.getElementById('taste').value) || 0;
 
-    const score = Math.round((style * 0.4 + innovation * 0.3 + taste * 0.3) * 10);
-    const result = document.getElementById('scoreResult');
-
-    result.textContent = `Your Tackymeter Score: ${score}/100`;
-    result.style.color = score >= 70 ? '#00ff88' : score >= 40 ? '#ffaa00' : '#ff0055';
-  }
-</script>
 </body>
 </html>
