@@ -3,133 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geezers With Tweezers</title>
+  <title>Tackymeter Dashboard</title>
   <style>
-    /* 🏎️ Retro Motorsport + Luxury Theme */
     body {
       font-family: 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #f0f0f0;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
-      color: #e0e0e0;
     }
 
     header {
-      background-color: #111;
-      color: #f5f5f5;
+      background: #111;
       padding: 30px;
       text-align: center;
-      border-bottom: 4px solid #cc0000;
+      border-bottom: 4px solid #00ffc8;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2em;
+      color: #00ffc8;
     }
 
     .section {
       padding: 40px 20px;
       max-width: 1000px;
       margin: auto;
-      background-color: #1f1f1f;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-      margin-bottom: 40px;
     }
 
     h2 {
-      margin-bottom: 20px;
       color: #ffcc00;
-      font-family: 'Courier New', monospace;
+      margin-bottom: 20px;
     }
 
-    label {
-      display: block;
-      margin: 10px 0;
-    }
-
-    input[type="number"] {
-      width: 60px;
-      padding: 5px;
-      margin-left: 10px;
-      background-color: #333;
-      color: #fff;
-      border: 1px solid #666;
-      border-radius: 4px;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #cc0000;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #ff3300;
-    }
-
-    #scoreResult {
-      margin-top: 20px;
-      font-size: 1.2em;
-    }
-
-    .gallery-grid {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .gallery-grid img {
-      width: 200px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      border: 2px solid #444;
-    }
-
-    .gallery-grid img:hover {
-      transform: scale(1.05);
-      border-color: #ffcc00;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .modal img {
-      max-width: 80%;
-      max-height: 80%;
-      border-radius: 10px;
-      border: 4px solid #ffcc00;
-    }
-
-    .leaderboard {
+    .table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 40px;
     }
 
-    .leaderboard th, .leaderboard td {
+    .table th, .table td {
       padding: 12px;
-      text-align: left;
       border-bottom: 1px solid #444;
+      text-align: left;
     }
 
-    .leaderboard th {
+    .table th {
       background-color: #333;
-      color: #ffcc00;
-      font-family: 'Courier New', monospace;
+      color: #00ffc8;
     }
 
-    .leaderboard tr:hover {
+    .table tr:hover {
       background-color: #2a2a2a;
     }
 
@@ -138,109 +63,97 @@
       padding: 20px;
       background-color: #111;
       color: white;
-      border-top: 4px solid #cc0000;
+      border-top: 4px solid #00ffc8;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Geezers With Tweezers</h1>
-    <p>Celebrating Watchmaking, Taste, and Speed</p>
+    <h1>Tackymeter Analytics</h1>
+    <p>Live data from Google Sheets via OpenSheet</p>
   </header>
 
-  <div class="section" id="tackymeter-test">
-    <h2>Tackymeter Taste Test</h2>
-    <p>Rate this watch on style, innovation, and taste. Your score will be calculated instantly.</p>
-
-    <label>Style (1–10): <input type="number" id="style" min="1" max="10" /></label>
-    <label>Innovation (1–10): <input type="number" id="innovation" min="1" max="10" /></label>
-    <label>Taste (1–10): <input type="number" id="taste" min="1" max="10" /></label>
-    <button onclick="calculateTackymeter()">Calculate Score</button>
-
-    <div id="scoreResult"></div>
-  </div>
-
-  <div class="section" id="gallery">
-    <h2>Watch Gallery</h2>
-    <div class="gallery-grid">
-      <img src="images/grand-seiko.jpg" alt="Grand Seiko" onclick="openModal(this)" />
-      <img src="images/rolex.jpg" alt="Rolex" onclick="openModal(this)" />
-      <img src="images/tag-heuer.jpg" alt="TAG Heuer" onclick="openModal(this)" />
-    </div>
-  </div>
-
-  <div id="modal" class="modal" onclick="closeModal()">
-    <img id="modalImg" />
-  </div>
-
-  <div class="section" id="leaderboard">
-    <h2>🏁 F1-Inspired Watch Leaderboard</h2>
-    <table class="leaderboard">
+  <div class="section" id="tackymeter-q1">
+    <h2>🏁 Tackymeter Wall – Q1</h2>
+    <table class="table" id="table-q1">
       <thead>
         <tr>
           <th>Position</th>
           <th>Brand</th>
           <th>Model</th>
-          <th>Lap Time (Style)</th>
+          <th>Score</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="section" id="tackymeter-q2">
+    <h2>🏁 Tackymeter Wall – Q2</h2>
+    <table class="table" id="table-q2">
+      <thead>
         <tr>
-          <td>1</td>
-          <td>TAG Heuer</td>
-          <td>Monaco</td>
-          <td>1:18.4</td>
+          <th>Position</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Score</th>
         </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="section" id="power-rankings-q1">
+    <h2>📊 Power Rankings – Q1</h2>
+    <table class="table" id="table-pr-q1">
+      <thead>
         <tr>
-          <td>2</td>
-          <td>Omega</td>
-          <td>Speedmaster</td>
-          <td>1:19.2</td>
+          <th>Rank</th>
+          <th>Brand</th>
+          <th>Change</th>
+          <th>Insight</th>
         </tr>
-        <tr>
-          <td>3</td>
-          <td>Rolex</td>
-          <td>Daytona</td>
-          <td>1:20.1</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Grand Seiko</td>
-          <td>SBGA413</td>
-          <td>1:21.7</td>
-        </tr>
-      </tbody>
+      </thead>
+      <tbody></tbody>
     </table>
   </div>
 
   <footer>
-    <p>&copy; 2025 Geezers With Tweezers. All rights reserved.</p>
+    <p>&copy; 2025 Geezers With Tweezers. Powered by OpenSheet + Google Sheets</p>
   </footer>
 
   <script>
-    function calculateTackymeter() {
-      const style = parseInt(document.getElementById('style').value) || 0;
-      const innovation = parseInt(document.getElementById('innovation').value) || 0;
-      const taste = parseInt(document.getElementById('taste').value) || 0;
+    // Replace with your actual Google Sheet ID
+    const SHEET_ID = 'YOUR_SHEET_ID_HERE';
 
-      const score = Math.round((style * 0.4 + innovation * 0.3 + taste * 0.3) * 10);
-      const result = document.getElementById('scoreResult');
+    const endpoints = {
+      q1: `https://opensheet.elk.sh/${SHEET_ID}/tackymeter-q1`,
+      q2: `https://opensheet.elk.sh/${SHEET_ID}/tackymeter-q2`,
+      prq1: `https://opensheet.elk.sh/${SHEET_ID}/power-rankings-q1`
+    };
 
-      result.textContent = `Your Tackymeter Score: ${score}/100`;
-      result.style.color = score >= 70 ? '#00cc66' : score >= 40 ? '#ffaa00' : '#ff3333';
+    function loadTable(endpoint, tableId, columns) {
+      fetch(endpoint)
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.querySelector(`#${tableId} tbody`);
+          data.forEach(row => {
+            const tr = document.createElement('tr');
+            columns.forEach(col => {
+              const td = document.createElement('td');
+              td.textContent = row[col] || '';
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+        });
     }
 
-    function openModal(img) {
-      const modal = document.getElementById('modal');
-      const modalImg = document.getElementById('modalImg');
-      modalImg.src = img.src;
-      modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
+    // Load each table
+    loadTable(endpoints.q1, 'table-q1', ['Position', 'Brand', 'Model', 'Score']);
+    loadTable(endpoints.q2, 'table-q2', ['Position', 'Brand', 'Model', 'Score']);
+    loadTable(endpoints.prq1, 'table-pr-q1', ['Rank', 'Brand', 'Change', 'Insight']);
   </script>
 
 </body>
